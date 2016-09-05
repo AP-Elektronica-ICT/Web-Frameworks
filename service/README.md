@@ -155,6 +155,4 @@ http://viralpatel.net/blogs/angularjs-service-factory-tutorial/
 
 ## Eigen services aanmaken
 
-
-
 De factory methode maakt een singleton UserService die 2 functies bevat. De controllers krijgen de UserService door deze te injecteren in de controller's functie als parameter.

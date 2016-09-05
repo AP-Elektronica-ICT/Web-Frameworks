@@ -240,6 +240,10 @@ Kortom wordt gezegd dat er altijd een punt moet staan in angular expressies. Dus
 
 *** Probeer zelf ***
 
+## Controller best practices
+
+We hebben hierboven goede lightweight controllers staan. Als we echter complexere operaties moeten uitvoeren zoals Xhr requests of complexe business logica, zijn controllers niet meer de plek om alle logica in te zetten. We kunnen zulke logica dan beter in `services` of `directives` plaatsen. Houd de controllers zo licht mogelijk.
+
 * Verifieer dat het laatste experiment in de vorige paragraaf nu wel werkt.
 
 Author: Tom Peeters & Kristof Overdulve
