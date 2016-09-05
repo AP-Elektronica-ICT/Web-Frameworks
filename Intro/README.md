@@ -11,6 +11,15 @@ In grote lijnen zullen we een web applicatie ontwikkelen dat op de zogenaamde ME
 * A(ngular): een client-side web framework om het ontwikkelen van complexe web applicaties gemakkelijk en snel te doen verlopen
 * N(ode.js): de server-side infrastructuur dat Javascript op de V8 engine draait om Javascript backends te ontwikkelen
 
+## Front-end vs back-end
+
+In web development worden twee termen vaak gebruikt om een onderscheid te maken in waar de code zal 'leven'.
+
+* Front-end/client-side: met de front-end of client-side verwijst men naar datgene in de browser van de gebruiker draait. Dit omvat dus de HTML, CSS en Javascript code.
+* Back-end/server-side: hiermee bedoelt men de code die op de server draait en dus niet lokaal op de machine van de gebruiker. Dit omvat een REST frontend dat HTML pagina's of JSON bestanden rendert en daarachter de infrastructuur om correct berichten te ontvangen van de front-end, te vwerwerken en een gepast antwoord terug te sturen.
+
+Met 'Full Stack' verwijst men naar ontwikkelaars of technologieën die zowel op client side als op server side 'leven'. Web frameworks die zowel op de front-end als op de back-end draaien worden 'isomorphic' web frameworks genoemd. `Meteor.js` is een isomorphic web framework.
+
 ## Wat is een framework?
 
 Er is vaak verwarring over het verschil tussen een *framework* en een *library*. Een handige richtlijn is dat je bij het gebruik van libraries de libraries oproept. Jij hebt dus controle waar en hoe het gebruikt wordt. Een framework daarentegen roept jouw code op. Het tegenovergestelde dus. Laten we dit verschil kort illustreren met jQuery en Angular. 
@@ -92,3 +101,7 @@ Natuurlijk zijn er ook enkele nadelen verbonden aan frameworks. Enkele belangrij
 * Omdat het effect van frameworks op je architectuur zo groot is, is het vaak moeilijk zo niet onmogelijk om te veranderen van framework zonder de hele applicatie opnieuw te schrijven. Zeker in web development waar er elke week the next best framework opduikt, kan het een belangrijke invloed hebben.
 
 Het is belangrijk een goede balans te vinden, kritisch te zijn tegenover nieuwe web frameworks en om bij de keuze van web frameworks te zien in hoeverre de opgelegde architectuur niet over-engineered is en je dus snel beperkingen zal tegenkomen.
+
+## Korte recap van client-side web technologieën
+
+Grofweg kent de browser 3 verschillende soorten bestanden: HTML, CSS en Javascript. *HTML* bestanden die de DOM (Document Object Model) structuur bevat. Dit is de structuur van de data die moet getoond worden in de browser. *CSS* bestanden die op je DOM structuur inwerkt om de web site op te maken. CSS bepaalt de layout van je web site en hoe het eruit moet zien. *Javascript* bestanden die de functionaliteit van je web applicatie verrijken. Via Javascript kan je XML Http Requests (Xhr) web requests sturen, over web pagina's heen springen en - heel belangrijk - de DOM structuur van je web pagina aanpassen. Dit kan zo eenvoudig zijn als een extra attribuut toevoegen aan een HTML element of een tekst veranderen of zo complex als complexe elementen in een lijst toevoegen, vervangen en verwijderen.

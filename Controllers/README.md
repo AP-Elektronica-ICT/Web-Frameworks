@@ -1,5 +1,7 @@
 ## 1 Controllers
 
+*** TODO Iets over data binding best practices ***
+
 We gebruiken de ng-show directive samen met de controller om de visibiliteit te veranderen na een button click.
 
 We gebruiken de ng-controller directive om ons div element samen met de child elementen te binden aan de context van de myctrl controller.
