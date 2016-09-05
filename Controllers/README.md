@@ -1,80 +1,86 @@
 ## 1 Controllers
 
-*** TODO Iets over data binding best practices ***
+Controllers worden gebruikt om functionaliteit toe te voegen aan de scope van een view dat verder gaat dan pure double binding. We kunnen het ook gebruiken om de initiële staat van variabelen te zetten.
 
-We gebruiken de ng-show directive samen met de controller om de visibiliteit te veranderen na een button click.
+We definiëren een controller als volgt
 
-We gebruiken de ng-controller directive om ons div element samen met de child elementen te binden aan de context van de myctrl controller.
-De ng-click directive roept de toggle functie op die geimplementeerd is in de controller. De ng-show directive is gebonden aan de visible scope variabele.
+```js
+var app = angular.module('sampleApp', []);
 
-De visible variabele en de toggle functie zijn gedefinieerd in de $scope service. Deze $scope service wordt aan de controller doorgegeven door middel van dependency injection.
-
-```html
-
-<script>
-	function myctrl($scope)
-	{
-		$scope.visible = true;
-		
-		$scope.toggle = function()
-		{
-			$scope.visible = !$scope.visible;
-		}
-	}
-</script>
-	</head>
-
-	<body ng-app>
-		
-		<div ng-controller="myctrl">
-			<button ng-click="toggle()">Toggle</button>
-			<p ng-show="visible">Hallo</p>
-		</div>
-
-	</body>
-	
+app.controller('MyController', function($scope) {
+  // ... functionaliteit hier definiëren
+});
 ```
 
-## MVC pattern
-Deze compositie noemen we het model-view-controller patroon. Het model is de javascript code. Terwijl de view de HTML template is. De controller is de lijm tussen template en model.
-De controller maakt two-way binding mogelijk zodat veranderingen tussen beide in sync blijven.
+en gebruiken dit dan in de DOM structuur als volgt
 
-In ons voorbeeld is het visible attribuut het model. De controller wordt gebruikt om de scope te definiëren en stelt de controller voor, en interreageert met onze HTML code (de view).
+```
+  <body ng-app="sampleApp">
+    ...
+    <div ng-controller="MyController">
+      ... functionaliteit controller hier gebruiken
+    </div>
+    ...
+  </body>
+```
 
+De `<module variabele>.controller()` functie neemt in zijn basis vorm twee argumenten. Het eerste argument is de naam dat de controller heeft en dat in de DOM tree wordt meegegeven als waarde aan de `ng-controller` directive. Het tweede argument is een functie dat wordt opgeroepen wanneer het DOM element wordt gecreëerd in de HTML. Het is conventie om je controllers te noemen als `<naam>Controller`.
 
+Deze functie heeft hier één argument met als naam `$scope`. Angular werkt via *Dependency Injection* om het `$scope` object mee te geven zodat je het kan gebruiken binnen de functie.
 
+*** Probeer zelf: ***
 
-## 2 Toewijzen van een default waarde aan een model
+* Verwijder het `$scope` argument een keer en zie wat er gebeurt. Zet in de controller functie ook eens `$scope.name = "Test"`. Wat merk je nu?
+* Geef als parameters `$timeout, $scope`mee aan de functie en zie wat er gebeurt.
 
-Controllers voorzien in business logica. Bijvoorbeeld wanneer een gebruiker op een knop klikt zal de controller het model voorbereiden voor de view.
-Als algemene regel kunnen we stellen dat de controller de DOM (document object model) niet manipuleert.
+Je kan ook een array meegeven als tweede argument van de `<module variabele>.controller` functie. Het bovenstaande voorbeeld zou er dan als volgt uitzien.
 
-Om een default waarde aan de scope van de controller te hangen maak je gebruik van de ng-controller directive en definieer je de scope variabele in de controller's functie.
+```js
+var app = angular.module('sampleApp', []);
 
-De scope is hierarchisch en volgt de DOM hierarchie.
+app.controller('MyController', [ '$scope', function($scope) {
+  // ... functionaliteit hier definiëren
+}]);
+```
 
+Wanneer je van plan bent je Javascript bestanden te optimaliseren minification strategieën, moet je de controller met arrays instantieren. De `$scope` variabele wordt bij minification namelijk hernoemd naar b.v. `a` en zo weet Angular nog steeds dat `a` eigenlijk overeen komt met `$scope`.
+
+## Voorbeelden
+
+### Voorbeeld 1
+
+In dit voorbeeld gebruiken de ng-show directive samen met de controller om de zichtbaarheid te veranderen na een button click.
+
+We gebruiken de ng-controller directive om ons div element samen met de child elementen te binden aan de context van `MyController`.
+De ng-click directive roept de toggle functie op die geïmplementeerd is in de controller. De `ng-show` directive is gebonden aan de visible scope variabele.
 
 ```html
+<head>
+  ...
+  <script>
+    var app = angular.module('sampleApp', []);
+    app.controller('MyController', function($scope) {
+      $scope.visible = true;
 
-<script>
-	function myctrl($scope)
-	{
-		$scope.value = "Hallo Tom";
-	}
-</script>
-	</head>
+      $scope.toggle = function() {
+        $scope.visible = !$scope.visible;
+      }
+    }
+  </script>
+</head>
 
-	<body ng-app>
-		
-		<div ng-controller="myctrl">
-			<p>{{value}}</p>
-		</div>
-
+<body ng-app="sampleApp">
+  <div ng-controller="myctrl">
+    <button ng-click="toggle()">Toggle</button>
+    <p ng-show="visible">Hallo</p>
+  </div>
+</body>
 
 ```
 
+In ons voorbeeld is het `visible` attribuut het model. De controller wordt gebruikt om variabelen op de scope te zetten zodat ze kunnen gebruikt worden in de view (de HTML code).
 
-## 3 Veranderen van het model door middel van de controller
+### 2 Veranderen van het model door middel van de controller
 
 We gaan bijvoorbeeld het 'value' model met 1 incrementeren door gebruik te maken
 van de controller.
@@ -82,89 +88,158 @@ In voorbeeld3 wordt de ng-init directive gebruikt wanneer de pagina geladen word
 
 ```html
 <script>
-	function myctrl($scope)
-	{
-		$scope.value = 1;
-		
-		$scope.increment = function(inc)
-		{
-			$scope.value += inc;
-		};
-	}
+  var app = angular.module('sampleApp', []);
+  app.controller('MyController', function($scope) {
+    $scope.value = 1;
+    
+    $scope.increment = function(inc) {
+      $scope.value += inc;
+    };
+  });
 </script>
-	</head>
+</head>
 
-	<body ng-app>
-		
-		<div ng-controller="myctrl">
-			<p ng-init="increment(3)">{{value}}</p>
-		</div>
-
-	</body>
+<body ng-app="sampleApp">
+  <div ng-controller="myctrl">
+    <p>{{value}}</p>
+    <button ng-click="increment(3)">Increment</button>
+  </div>
+</body>
 
 ```
-## 4 Encapsulate een model  door middel van een controller's functie
 
-(voorbeeld 4)In plaats van rechtstreeks het model aan te spreken (via scope service), gaan we het model encapsuleren binnen een functie van de controller.
+### 3 Encapsulatie een model door middel van een controller's functie
+
+(voorbeeld 4) In plaats van rechtstreeks het model aan te spreken (via scope service), gaan we het model encapsuleren binnen een functie van de controller.
 
 
 ```html
 <script>
-	function myctrl($scope)
-	{
-		$scope.value = 10;
-		
-		$scope.getValue = function()
-		{
-			return $scope.value;
-		};
-	}
+  var app = angular.module('sampleApp', []);
+  app.controller('MyController', function($scope) {
+    $scope.value = 10;
+    
+    $scope.getValue = function()
+    {
+            return $scope.value;
+    };
+  });
 </script>
-	</head>
+</head>
 
-	<body ng-app>
-		
-		<div ng-controller="myctrl">
-			<p>{{getValue()}}</p>
-		</div>
-
-	</body>
-
-
+<body ng-app="sampleApp">
+  <div ng-controller="myctrl">
+          <p>{{getValue()}}</p>
+  </div>
+</body>
 ```
 
-## 5 Reageren op scope veranderingen
+### 4 Reageren op scope veranderingen
 
 Als het model verandert wil je een actie triggeren. Hiervoor maak je gebruik van de watch functie in je controller.
 Het eerste argument van de $watch functie is een angular expressie. Het tweede argument wordt opgeroepen waneer de expressie evaluatie een andere waarde terugkrijgt.
 
 ```html
-
 <script>
-	function myctrl($scope)
-	{
-		$scope.name = "";
-		
-		$scope.$watch("name",function(newVal,oldVal)
-		{
-			if($scope.name.length>3)
-			{
-				$scope.greeting = "greetings " + $scope.name;
-			}
-		});
-	}
+  var app = angular.module('sampleApp', []);
+  app.controller('MyController', function($scope) {
+    $scope.name = "";
+
+    $scope.$watch("name", function(newVal,oldVal) {
+      if($scope.name.length>3) {
+        $scope.greeting = "greetings " + $scope.name;
+      }
+    });
+  }
 </script>
-	</head>
+  </head>
 
-	<body ng-app>
-		
-		<div ng-controller="myctrl">
-			<input type="text" ng-model="name"/>
-			<p>{{greeting}}</p>
-		</div>
-
-	</body>
-
+  <body ng-app="sampleApp">
+    <div ng-controller="myctrl">
+      <input type="text" ng-model="name"/>
+      <p>{{greeting}}</p>
+    </div>
+  </body>
 ```
 
-Author: Tom Peeters
+## Scopes
+
+Scopes zijn een core concept in Angular applicaties die overal worden gebruikt. Scopes bevatten de data (het model) van de applicatie en de core business functionaliteit. Scopes kunnen veranderingen `watchen`. Scopes zijn in Angular (net zoals een DOM structuur) hiërarchisch opgebouwd via prototypical inheritance. Prototypical inheritance is de manier waarop Javascript via functies (closures eigenlijk) overerving toepast. Wanneer we een controller toevoegen, wordt er een nieuwe scope gecreëerd dat aan alle variabelen kan van parent scopes (parent in de zin van de DOM structuur). Zie volgend voorbeeld.
+
+```
+<html>
+  <head>
+    <title>Sample</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script type="text/javascript">
+      var sampleApp = angular.module('sampleApp', []);
+      sampleApp.controller('FirstController', function($scope) {
+        $scope.firstVariable = "FirstVariable";
+      });
+      sampleApp.controller('NestedController', function($scope) {
+        $scope.nestedVariable = "NestedVariable";
+      });
+    </script>
+  </head>
+  <body ng-app="sampleApp">
+    <div style="border: 1px solid blue;" ng-controller="FirstController">
+      <h1>{{ firstVariable }}</h1>
+      <div style="border: 1px solid green;" ng-controller="NestedController">
+        <h2>{{ firstVariable }}</h2>
+        <h2>{{ nestedVariable }}</h2>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+Als we dit draaien in de browser, zien we dat de `NestedController` overerft van `FirstController` (en alle controllers daarboven) en dus aan zijn variabelen kan. Scopes erven over volgens de structuur van de DOM. Als we een Angular debugging tool gebruiken (e.g. Chrome Batarang)
+
+*** Probeer zelf: ***
+
+* Zet de `<h2>{{ nestedVariable }}</h2>` expressie ook eens in de scope van de `FirstController`. Wat zie je?
+* Verander `NestedController` eens naar `FirstController` en andersom. Wat zien we?
+* Zet in de `NestedController`volgende expressie: `$scope.firstVariable = "FirstVariableNowNested". Kan dit? Wat zien we? Hoe komt dit?
+
+## Data binding tips
+
+Javascript heeft twee manieren om data mee te geven: by value en by reference. Primitieve objecten worden toegekend by value en objecten by reference. In een eenvoudig project met 2 scopes gaf dit al problemen. Daarom is het in Angular best practice om attributen van de scope op een object te zetten en niet rechtstreeks op de scope. Het voorgaande voorbeeld zou er dan als volgt uit zien.
+
+```html
+<html>
+  <head>
+    <title>Sample</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script type="text/javascript">
+      var sampleApp = angular.module('sampleApp', []);
+      sampleApp.controller('FirstController', function($scope) {
+        $scope.first = {
+          variable: "FirstVariable"
+        };
+      });
+      sampleApp.controller('NestedController', function($scope) {
+        $scope.nested = {
+          variable: "NestedVariable"
+        };
+      });
+    </script>
+  </head>
+  <body ng-app="sampleApp">
+    <div style="border: 1px solid blue;" ng-controller="FirstController">
+      <h1>{{ first.variable }}</h1>
+      <div style="border: 1px solid green;" ng-controller="NestedController">
+        <h2>{{ first.variable }}</h2>
+        <h2>{{ nested.variable }}</h2>
+      </div>
+    </div>
+  </body>
+</html>
+```
+
+Kortom wordt gezegd dat er altijd een punt moet staan in angular expressies. Dus wel `{{ person.name }}` en niet `{{ nameOfPerson }}`.
+
+*** Probeer zelf ***
+
+* Verifieer dat het laatste experiment in de vorige paragraaf nu wel werkt.
+
+Author: Tom Peeters & Kristof Overdulve
