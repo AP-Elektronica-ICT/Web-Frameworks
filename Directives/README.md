@@ -402,3 +402,7 @@ Indien een string wordt meegegeven, zoekt Angular de controller met de opgegeven
 
 * Maak een directive dat experimenteert met bovenstaande scope variabelen en de verschillende opties.
 * Probeer alle bovenstaande opties zelf uit.
+
+## jQuery en directives
+
+Het wordt binnen de context van deze cursus afgeraden om veel met jQuery te werken omdat het je zou kunnen motiveren opnieuw alles met selectors op de volledige DOM te schrijven. Heb je ergens een component gevonden dat enkel met jQuery werkt, dan is het een goed idee om die jQuery te wrappen in modulaire directives om zo de 'schade' te beperken tot de internals van de directive.

@@ -1,6 +1,5 @@
 # Mongoose
 
-
 Dankzij Node.js en MongoDB en de mogelijkheid om JSON te versturen wordt deze
 constructie (MEAN Stack) veel gebruikt in web development.
 * MEAN Stack: MongoDB, Express, Node en AngularJS.
